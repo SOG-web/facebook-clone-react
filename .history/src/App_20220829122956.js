@@ -13,7 +13,6 @@ function App() {
 
   useEffect(() => {
     const subscriber = fireAuth.onAuthStateChanged(onAuthStateChanged);
-    console.log(subscriber);
     return subscriber; // unsubscribe on unmount
   }, []);
 

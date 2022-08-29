@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Navbar from './components/navbar';
 import Login from './pages/Login';
-import { fireAuth } from './firebase';
+import { fireAuth } from '../firebase';
 
 function App() {
   const [user, setUser] = useState();
@@ -13,7 +13,6 @@ function App() {
 
   useEffect(() => {
     const subscriber = fireAuth.onAuthStateChanged(onAuthStateChanged);
-    console.log(subscriber);
     return subscriber; // unsubscribe on unmount
   }, []);
 

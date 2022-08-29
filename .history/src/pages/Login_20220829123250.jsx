@@ -1,9 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-
-import { fireAuth } from '../firebase';
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -28,19 +25,7 @@ function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
-      createUserWithEmailAndPassword(fireAuth, values.email, values.password)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          // ...
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorMessage);
-          // ..
-        });
+      alert(JSON.stringify(values, null, 2));
     },
   });
 

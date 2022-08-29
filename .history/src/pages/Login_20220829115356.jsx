@@ -1,9 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-
-import { fireAuth } from '../firebase';
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -28,19 +25,7 @@ function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
-      createUserWithEmailAndPassword(fireAuth, values.email, values.password)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          // ...
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorMessage);
-          // ..
-        });
+      alert(JSON.stringify(values, null, 2));
     },
   });
 
@@ -55,26 +40,24 @@ function Login() {
       <div className='flex flex-col gap-2'>
         <div className='bg-white w-[500px] h-[316px] drop-shadow-xl rounded-xl px-3'>
           <form onSubmit={formik.handleSubmit} className='w-full'>
-            <div className='mb-4 mt-4'>
+            <div>
+              <label htmlFor='email'>Email</label>
               <input
                 id='email'
                 type='text'
                 {...formik.getFieldProps('email')}
-                placeholder='email address'
-                className='h-[50px] p-4 w-full border-2 rounded-[5px] mt-4'
               />
               {formik.touched.email && formik.errors.email ? (
                 <div>{formik.errors.email}</div>
               ) : null}
             </div>
 
-            <div className='mb-4'>
+            <div>
+              <label htmlFor='password'>Password</label>
               <input
                 id='password'
                 type='text'
-                placeholder='password'
                 {...formik.getFieldProps('password')}
-                className='h-[50px] p-4 w-full border-2 rounded-[5px] mt-4'
               />
               {formik.touched.password && formik.errors.password ? (
                 <div>{formik.errors.password}</div>

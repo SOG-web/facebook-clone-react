@@ -28,7 +28,6 @@ function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       createUserWithEmailAndPassword(fireAuth, values.email, values.password)
         .then((userCredential) => {
           // Signed in
@@ -38,7 +37,6 @@ function Login() {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(errorMessage);
           // ..
         });
     },
