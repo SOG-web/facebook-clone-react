@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Modal from 'react-modal';
 
@@ -58,7 +55,7 @@ function Login() {
     onSubmit: (values) => {
       // console.log(values);
       setLoading(true);
-      signInWithEmailAndPassword(fireAuth, values.email, values.password)
+      createUserWithEmailAndPassword(fireAuth, values.email, values.password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
@@ -148,14 +145,10 @@ function Login() {
         onRequestClose={!modalIsOpen}
         style={customStyles}
         contentLabel='Example Modal'
+        closeTimeoutMS={2}
       >
         {/* <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2> */}
-        <button
-          className='bg-blue-500 p-3 text-white mb-3'
-          onClick={() => setIsOpen(false)}
-        >
-          close
-        </button>
+        {/* <button onClick={() => setIsOpen(false)}>close</button> */}
         <p>{errorMessage}</p>
       </Modal>
     </div>

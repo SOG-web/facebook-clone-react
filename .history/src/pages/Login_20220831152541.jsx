@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Modal from 'react-modal';
 
@@ -44,8 +41,8 @@ const customStyles = {
 
 function Login() {
   let subtitle;
-  const [loading, setLoading] = useState(false);
-  const [color, setColor] = useState('#ffffff');
+  let [loading, setLoading] = useState(false);
+  let [color, setColor] = useState('#ffffff');
   const [modalIsOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -58,7 +55,7 @@ function Login() {
     onSubmit: (values) => {
       // console.log(values);
       setLoading(true);
-      signInWithEmailAndPassword(fireAuth, values.email, values.password)
+      createUserWithEmailAndPassword(fireAuth, values.email, values.password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
@@ -69,7 +66,6 @@ function Login() {
           const errorCode = error.code;
           const errorMessage = error.message;
           setErrorMessage(errorMessage);
-          setIsOpen(true);
           setLoading(false);
           // ..
         });
@@ -149,14 +145,9 @@ function Login() {
         style={customStyles}
         contentLabel='Example Modal'
       >
-        {/* <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2> */}
-        <button
-          className='bg-blue-500 p-3 text-white mb-3'
-          onClick={() => setIsOpen(false)}
-        >
-          close
-        </button>
-        <p>{errorMessage}</p>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
+        <button onClick={() => setIsOpen(false)}>close</button>
+        <p></p>
       </Modal>
     </div>
   );

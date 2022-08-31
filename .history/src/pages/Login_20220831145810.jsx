@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import ClipLoader from 'react-spinners/ClipLoader';
-import Modal from 'react-modal';
 
 import { fireAuth } from '../firebase';
 
 const override = {
-  display: 'inline-block',
+  display: 'inline',
   margin: '0 auto',
   borderColor: 'white',
 };
@@ -31,23 +27,9 @@ const validationSchema = Yup.object({
     .required('Password is required'),
 });
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
-
 function Login() {
-  let subtitle;
-  const [loading, setLoading] = useState(false);
-  const [color, setColor] = useState('#ffffff');
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  let [loading, setLoading] = useState(true);
+  let [color, setColor] = useState('#ffffff');
 
   const formik = useFormik({
     initialValues: {
@@ -56,9 +38,9 @@ function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // console.log(values);
+      console.log(values);
       setLoading(true);
-      signInWithEmailAndPassword(fireAuth, values.email, values.password)
+      createUserWithEmailAndPassword(fireAuth, values.email, values.password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
@@ -68,9 +50,7 @@ function Login() {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setErrorMessage(errorMessage);
-          setIsOpen(true);
-          setLoading(false);
+          console.log(errorMessage);
           // ..
         });
     },
@@ -113,20 +93,20 @@ function Login() {
               ) : null}
             </div>
 
-            <button
-              type='submit'
-              className='bg-blue-500 w-full h-[50px] rounded-[5px] text-white font-medium text-[24px] disabled:bg-blue-300'
-              disabled={loading ? true : false}
-            >
-              <span>Log In</span>
-
+            <div className='bg-blue-500 w-full h-[50px] rounded-[5px] text-white font-medium text-[24px]'>
+              <button
+                type='submit'
+                className='text-white font-medium text-[24px]'
+              >
+                Log In
+              </button>
               <ClipLoader
                 color={color}
                 loading={loading}
                 cssOverride={override}
                 size={30}
               />
-            </button>
+            </div>
           </form>
           <p className='text-blue-500 text-center mt-[15px] capitalize'>
             forgotten password ?
@@ -143,21 +123,6 @@ function Login() {
           brand or business.
         </p>
       </div>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={!modalIsOpen}
-        style={customStyles}
-        contentLabel='Example Modal'
-      >
-        {/* <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2> */}
-        <button
-          className='bg-blue-500 p-3 text-white mb-3'
-          onClick={() => setIsOpen(false)}
-        >
-          close
-        </button>
-        <p>{errorMessage}</p>
-      </Modal>
     </div>
   );
 }
